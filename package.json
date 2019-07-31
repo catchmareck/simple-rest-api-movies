@@ -4,7 +4,8 @@
   "description": "Simple REST API created for recruitment process",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --exit --recursive",
+    "test:coverage": "nyc --reporter=text mocha --exit --recursive",
     "start": "node index.js"
   },
   "author": "",
