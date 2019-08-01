@@ -20,7 +20,7 @@ describe('Controller: Movies', () => {
     
     before(() => {
         
-        controller = new MoviesController({}, {});
+        controller = new MoviesController({body: {}}, {});
     });
     
     after(() => {
@@ -49,35 +49,18 @@ describe('Controller: Movies', () => {
 
             expect(controller).to.have.property('omdbApi');
         });
-    });
 
-    it('should fetch movie based on title', async () => {
-
-        const fakeMovie = {
-            'Title': '',
-            'Year': '',
-            'Runtime': '',
-            'Genre': '',
-            'Director': '',
-            'Plot': '',
-            'Poster': '',
-            'Ratings': [],
-            'Website': ''
-        };
-        const rp = require('request-promise');
-        const getStub = sandbox.stub(rp, 'get').resolves(fakeMovie);
-        const movie = await controller.fetch({ title: 'Harry Potter' });
-
-        expect(movie).to.be.an('object');
-        expect(movie).to.have.all.keys(['Title', 'Year', 'Runtime', 'Genre', 'Director', 'Plot', 'Poster', 'Ratings', 'Website']);
-        expect(movie.Ratings).to.be.an('array');
+        it('model property', function () {
+            
+            expect(controller).to.have.property('model');
+        });
     });
 
     it('should call OMDbProxy when fetching a movie', function () {
         
         const getMovieStub = sandbox.stub(controller.omdbApi, 'getMovie').returns();
         
-        controller.fetch();
+        controller.apiFetch();
         
         expect(getMovieStub.called).to.be.true;
     });
@@ -85,9 +68,43 @@ describe('Controller: Movies', () => {
     it('should call proxy with request body params', function () {
         
         const getMovieStub = sandbox.stub(controller.omdbApi, 'getMovie').returns();
+        
+        controller.requestBody = { title: 'Harry Potter', type: 'movie', year: '', plot: 'short' };
 
-        controller.fetch();
+        controller.apiFetch();
 
-        sinon.assert.calledWith(getMovieStub, { t: 'Harry Potter', type: 'movie', y: '', plot: 'short', r: 'json', v: 1 });
+        sinon.assert.calledWith(getMovieStub, { t: 'Harry Potter', type: 'movie', y: '', plot: 'short' });
+    });
+
+    it('should set requestBody in constructor', function () {
+        
+        const fakeBody = { fake: 'key' };
+        const fakeRequest = { body: fakeBody };
+        
+        const setRequestBodyStub = sandbox.spy(MoviesController.prototype, 'setRequestBody');
+        const controller = new MoviesController(fakeRequest);
+
+        expect(setRequestBodyStub.called).to.be.true;
+        expect(controller.requestBody).to.deep.equal(fakeBody);
+    });
+
+    it('should save movie in the DB', function () {
+        
+        const modelStub = sandbox.stub(controller.model, 'create').resolves();
+        
+        controller.saveMovie({})
+            .then(() => expect(modelStub.called).to.be.true);
+    });
+
+    it('should fetch movies from DB', function () {
+        
+        const modelStub = sandbox.stub(controller.model, 'findAll').resolves([]);
+        
+        return controller.dbFetch()
+            .then((result) => {
+
+                expect(modelStub.called).to.be.true;
+                expect(result).to.be.an('array');
+            });
     });
 });

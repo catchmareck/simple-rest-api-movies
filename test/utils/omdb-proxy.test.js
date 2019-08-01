@@ -22,7 +22,7 @@ describe('Utility: OMDb Proxy', function () {
         const getStub = sandbox.stub(rp, 'get').resolves();
         
         const proxy = new OMDbProxy();
-        const movie = proxy.getMovie();
+        const movie = proxy.getMovie({});
         
         expect(getStub.called).to.be.true;
     });
@@ -33,7 +33,7 @@ describe('Utility: OMDb Proxy', function () {
         const getStub = sandbox.stub(rp, 'get').rejects(new Error('Fake error'));
 
         const proxy = new OMDbProxy();
-        const movie = proxy.getMovie();
+        const movie = proxy.getMovie({});
         
         expect(movie).to.be.empty;
     });
