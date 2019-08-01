@@ -28,12 +28,25 @@ describe('Controller: Comments', () => {
         controller = null;
     });
 
+    describe('should have properties:', function () {
+
+        it('movieModel property', function () {
+
+            expect(controller).to.have.property('movieModel');
+        });
+    });
+    
     it('should save a comment in db', function () {
 
-        const createStub = sandbox.stub(controller.model, 'create').resolves();
+        const findAllStub = sandbox.stub(controller.movieModel, 'findAll').withArgs({ where: { movieId: 1 } }).resolves([{ movieId: 1 }]);
+        const createStub = sandbox.stub(controller.model, 'create').resolves({ setMovie() {} });
 
-        return controller.create()
-            .then(() => expect(createStub.called).to.be.true);
+        return controller.create({ movieId: 1 })
+            .then(() =>{
+
+                expect(findAllStub.called).to.be.true;
+                expect(createStub.called).to.be.true
+            });
     });
 
     it('should fetch all comments from DB', function () {

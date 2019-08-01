@@ -1,7 +1,7 @@
 'use strict';
 
 const Controller = require('./controller');
-const { Comment } = require('../models');
+const { Comment, Movie } = require('../models');
 
 class CommentsController extends Controller {
     
@@ -10,16 +10,24 @@ class CommentsController extends Controller {
         super(request, response);
         
         this.model = Comment;
+        this.movieModel = Movie;
     }
     
     create(comment) {
         
-        return this.model.create(comment);
+        return this.movieModel.findAll({ where: { movieId: comment.movieId } })
+            .then(([movie]) => {
+                
+                if (!movie) throw new Error('Movie does not exist!');
+                
+                return this.model.create(comment)
+                    .then((comm) => comm.setMovie(movie));
+            });
     }
     
     dbFetchAll() {
         
-        return this.model.findAll();
+        return this.model.findAll({ include: this.movieModel });
     }
 
     dbFetchByMovie(id) {
