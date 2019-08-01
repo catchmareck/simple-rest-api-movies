@@ -24,7 +24,7 @@ class CommentsController extends Controller {
 
     dbFetchByMovie(id) {
         
-        return this.model.findAll({ movieId: id });
+        return this.model.findAll({ where: { movieId: id } });
     }
 }
 

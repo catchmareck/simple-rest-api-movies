@@ -50,7 +50,7 @@ describe('Controller: Comments', () => {
 
     it('should fetch all comments for a movie', function () {
         
-        const findAllStub = sandbox.stub(controller.model, 'findAll').withArgs({ movieId: 1 }).resolves([]);
+        const findAllStub = sandbox.stub(controller.model, 'findAll').withArgs({ where: { movieId: 1 } }).resolves([]);
         
         return controller.dbFetchByMovie(1)
             .then((result) => {
