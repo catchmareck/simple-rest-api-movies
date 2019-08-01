@@ -10,10 +10,11 @@ class OMDbProxy {
             uri: config.api.url,
             qs: {
                 t,
-                ...type && {type},
-                ...y && {y},
-                ...plot && {plot},
-                apiKey: config.api.key },
+                ...type && { type },
+                ...y && { y },
+                ...plot && { plot },
+                apiKey: config.api.key
+            },
             json: true
         };
         return rp.get(options)
