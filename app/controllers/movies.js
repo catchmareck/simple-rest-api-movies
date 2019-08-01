@@ -1,27 +1,17 @@
 'use strict';
 
+const Controller = require('./controller');
 const OMDbProxy = require('../utils/omdb-proxy');
 const { Movie } = require('../models');
 
-class MoviesController {
+class MoviesController extends Controller {
     
     constructor(request, response) {
         
-        this.request = request;
-        this.response = response;
-        
-        this.requestBody = {};
+        super(request, response);
         
         this.omdbApi = new OMDbProxy();
-        
         this.model = Movie;
-        
-        this.setRequestBody();
-    }
-    
-    setRequestBody() {
-
-        this.requestBody = this.request.body;
     }
     
     apiFetch() {

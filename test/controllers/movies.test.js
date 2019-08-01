@@ -30,29 +30,9 @@ describe('Controller: Movies', () => {
 
     describe('should have properties:', function () {
 
-        it('request property', function () {
-
-            expect(controller).to.have.property('request');
-        });
-
-        it('response property', function () {
-
-            expect(controller).to.have.property('response');
-        });
-
-        it('requestBody property', function () {
-            
-            expect(controller).to.have.property('requestBody');
-        });
-
         it('OMDb API Proxy property', function () {
 
             expect(controller).to.have.property('omdbApi');
-        });
-
-        it('model property', function () {
-            
-            expect(controller).to.have.property('model');
         });
     });
 
@@ -74,18 +54,6 @@ describe('Controller: Movies', () => {
         controller.apiFetch();
 
         sinon.assert.calledWith(getMovieStub, { t: 'Harry Potter', type: 'movie', y: '', plot: 'short' });
-    });
-
-    it('should set requestBody in constructor', function () {
-        
-        const fakeBody = { fake: 'key' };
-        const fakeRequest = { body: fakeBody };
-        
-        const setRequestBodyStub = sandbox.spy(MoviesController.prototype, 'setRequestBody');
-        const controller = new MoviesController(fakeRequest);
-
-        expect(setRequestBodyStub.called).to.be.true;
-        expect(controller.requestBody).to.deep.equal(fakeBody);
     });
 
     it('should save movie in the DB', function () {
