@@ -3,9 +3,12 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 
+const validate = require('../middlewares/validate-request');
+const CommentsSchema = require('./validation-schemas/comments-schema');
+
 const CommentsController = require('../controllers/comments');
 
-router.post('/', (request, response) => {
+router.post('/', validate(CommentsSchema.create), (request, response) => {
     
     const controller = new CommentsController(request, response);
     const { movieId, content } = controller.getRequestBody();
@@ -15,7 +18,7 @@ router.post('/', (request, response) => {
         .catch(({ message }) => response.status(500).send({ message }));
 });
 
-router.get('/', (request, response) => {
+router.get('/', validate(CommentsSchema.fetchAll), (request, response) => {
     
     const controller = new CommentsController(request, response);
     

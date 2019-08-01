@@ -3,9 +3,12 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 
+const validate = require('../middlewares/validate-request');
+const MoviesSchema = require('./validation-schemas/movies-schema');
+
 const MoviesController = require('../controllers/movies');
 
-router.post('/', (request, response) => {
+router.post('/', validate(MoviesSchema.create), (request, response) => {
 
     const controller = new MoviesController(request, response);
     
@@ -28,7 +31,7 @@ router.post('/', (request, response) => {
         .catch(({ message }) => response.status(500).send({ message }));
 });
 
-router.get('/', (request, response) => {
+router.get('/', validate(MoviesSchema.fetchAll), (request, response) => {
 
     const controller = new MoviesController(request, response);
 
