@@ -22,8 +22,20 @@ describe('Utility: OMDb Proxy', function () {
         const getStub = sandbox.stub(rp, 'get').resolves({});
         
         const proxy = new OMDbProxy();
-        const movie = proxy.getMovie({});
+        const movie = proxy.getMovie({ t: 'Harry Potter', type: 'movie', y: 2011, plot: 'short' });
         
         expect(getStub.called).to.be.true;
+        sinon.assert.calledWith(getStub, { uri: undefined, qs: { t: 'Harry Potter', type: 'movie', y: 2011, plot: 'short', apiKey: undefined }, json: true });
+    });
+
+    it('should not include undefined values in the options.qs', function () {
+        
+        const rp = require('request-promise');
+        const getStub = sandbox.stub(rp, 'get').resolves({});
+        
+        const proxy = new OMDbProxy();
+        const movie = proxy.getMovie({ t: 'Harry Potter', type: undefined, y: undefined, plot: undefined });
+        
+        sinon.assert.calledWith(getStub, { uri: undefined, qs: { t: 'Harry Potter', apiKey: undefined }, json: true });
     });
 });

@@ -20,7 +20,7 @@ describe('Controller: Comments', () => {
 
     before(() => {
 
-        controller = new CommentsController({body: {}}, {});
+        controller = new CommentsController({body: {}}, { status() {} });
     });
 
     after(() => {
@@ -46,6 +46,20 @@ describe('Controller: Comments', () => {
 
                 expect(findAllStub.called).to.be.true;
                 expect(createStub.called).to.be.true
+            });
+    });
+
+    it('should respond with 404 status code if movie does not exist', function () {
+        
+        const findAllStub = sandbox.stub(controller.movieModel, 'findAll').withArgs({ where: { movieId: 1 } }).resolves([]);
+        const statusStub = sandbox.stub(controller.response, 'status').withArgs(404).returns();
+        
+        return controller.create({ movieId: 1 })
+            .then((result) => {
+                
+                expect(result).to.be.empty;
+                expect(findAllStub.called).to.be.true;
+                expect(statusStub.called).to.be.true
             });
     });
 
