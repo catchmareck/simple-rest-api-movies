@@ -18,6 +18,11 @@ class Controller {
 
         this.requestBody = this.request.body;
     }
+    
+    getRequestBody() {
+        
+        return this.requestBody;
+    }
 }
 
 module.exports = Controller;

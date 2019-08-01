@@ -62,4 +62,17 @@ describe('Controller: Controller', () => {
         expect(setRequestBodyStub.called).to.be.true;
         expect(controller.requestBody).to.deep.equal(fakeBody);
     });
+
+    it('should get requestBody', function () {
+
+
+        const fakeBody = { fake: 'key' };
+        const fakeRequest = { body: fakeBody };
+
+        const controller = new Controller(fakeRequest);
+        
+        const result = controller.getRequestBody();
+        
+        expect(result).to.deep.equal(fakeBody);
+    });
 });
