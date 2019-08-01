@@ -9,9 +9,12 @@ Movie.init({
     imdbId: { type: Sequelize.STRING, unique: true },
     title: { type: Sequelize.STRING, unique: false },
     year: { type: Sequelize.INTEGER },
+    runtime: { type: Sequelize.STRING },
     genre: { type: Sequelize.STRING },
+    director: { type: Sequelize.STRING },
     plot: { type: Sequelize.TEXT },
-    poster: { type: Sequelize.STRING }
+    poster: { type: Sequelize.STRING },
+    website: { type: Sequelize.STRING }
 }, {
     sequelize: db,
     underscored: true,

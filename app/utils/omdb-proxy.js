@@ -15,8 +15,8 @@ class OMDbProxy {
         
         if (response) {
 
-            const { Title, Year, Runtime, Genre, Director, Plot, Poster, Ratings, Website } = response;
-            movie = { Title, Year, Runtime, Genre, Director, Plot, Poster, Ratings, Website };
+            const { imdbID, Title, Year, Runtime, Genre, Director, Plot, Poster, Website } = response;
+            movie = { imdbID, Title, Year, Runtime, Genre, Director, Plot, Poster, Website };
         }
         
         return movie;
