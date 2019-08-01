@@ -3,6 +3,8 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 
+const log = require('../logger');
+
 const validate = require('../middlewares/validate-request');
 const MoviesSchema = require('./validation-schemas/movies-schema');
 
@@ -28,7 +30,11 @@ router.post('/', validate(MoviesSchema.create), (request, response) => {
                 })
         )
         .then(response.send.bind(response))
-        .catch(({ message }) => response.status(500).send({ message }));
+        .catch(({ message }) => {
+            
+            log.error(message);
+            response.sendStatus(500);
+        });
 });
 
 router.get('/', validate(MoviesSchema.fetchAll), (request, response) => {
@@ -37,7 +43,11 @@ router.get('/', validate(MoviesSchema.fetchAll), (request, response) => {
 
     controller.dbFetch()
         .then(response.send.bind(response))
-        .catch(({ message }) => response.status(500).send({ message }));
+        .catch(({ message }) => {
+
+            log.error(message);
+            response.sendStatus(500);
+        });
 });
 
 module.exports = router;
