@@ -18,7 +18,11 @@ class CommentsController extends Controller {
         return this.movieModel.findAll({ where: { movieId: comment.movieId } })
             .then(([movie]) => {
                 
-                if (!movie) throw new Error('Movie does not exist!');
+                if (!movie) {
+                    
+                    this.response.status(404);
+                    return {};
+                }
                 
                 return this.model.create(comment)
                     .then((comm) => comm.setMovie(movie));
