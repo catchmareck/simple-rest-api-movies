@@ -20,9 +20,9 @@ Demo: https://simple-rest-api-movies.herokuapp.com/movies
 
 #### 1. Create a local DB
 ```mysql
-> CREATE DATABASE <db name>;
-> CREATE USER '<username>'@'localhost' IDENTIFIED BY '<password>';
-> GRANT ALL PRIVILEGES ON *.* TO '<username>'@'localhost';
+CREATE DATABASE <db name>;
+CREATE USER '<username>'@'localhost' IDENTIFIED BY '<password>';
+GRANT ALL PRIVILEGES ON *.* TO '<username>'@'localhost';
 ```
 
 #### 2. Install dependencies
@@ -53,4 +53,13 @@ API_KEY=<your omdb api key>
 #### 5. Run the API
 ```sbtshell
 $ npm start
+```
+
+## How to test the API
+```sbtshell
+$ npm test
+```
+or with coverage
+```sbtshell
+$ npm run test:coverage
 ```
